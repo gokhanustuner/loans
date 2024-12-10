@@ -9,7 +9,11 @@ public record NumberOfInstallments(int value) {
     public final static List<Integer> ACCEPTED_INSTALLMENT_NUMBERS = List.of(6, 9, 12, 24);
 
     public NumberOfInstallments {
-        if (!ACCEPTED_INSTALLMENT_NUMBERS.contains(value))
+        if (!isNumberOfInstallmentValueValid())
             throw new InvalidNumberOfInstallmentsException("Number of installments must be in 6, 9, 12, 24");
+    }
+
+    private boolean isNumberOfInstallmentValueValid() {
+        return ACCEPTED_INSTALLMENT_NUMBERS.contains(value());
     }
 }
