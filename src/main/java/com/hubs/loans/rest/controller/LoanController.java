@@ -1,10 +1,10 @@
 package com.hubs.loans.rest.controller;
 
-import com.hubs.loans.application.query.InstallmentsQuery;
 import com.hubs.loans.application.query.ListLoansQuery;
 import com.hubs.loans.application.service.LoanService;
 import com.hubs.loans.domain.entity.Loan;
-import com.hubs.loans.dto.*;
+import com.hubs.loans.rest.request.CreateLoanRequest;
+import com.hubs.loans.rest.response.LoanResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -43,19 +43,4 @@ public class LoanController {
                 .toList();
         return ResponseEntity.ok(response);
     }
-
-    /*
-    @GetMapping(value = "/{loanId}/installments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InstallmentResponse>> listLoanInstallments(
-            @PathVariable UUID loanId,
-            @RequestParam @Min(1) @NotNull int page
-    ) {
-        List<Loan> loans = loanService.listLoans(InstallmentsQuery.of(loanId, page));
-        List<LoanResponse> response = loans.stream()
-                .map(LoanResponse::from)
-                .toList();
-        return ResponseEntity.ok(response);
-    }
-
-     */
 }

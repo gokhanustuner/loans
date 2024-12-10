@@ -22,7 +22,7 @@ public class Installment {
     private UUID id;
 
     @ManyToOne(targetEntity = Loan.class)
-    @JoinColumn(name = "loan_id", nullable = false, updatable = false)
+    @JoinColumn(name = "loan_id", referencedColumnName = "id", nullable = false, updatable = false)
     private Loan loan;
 
     @Column(nullable = false, precision = 15, scale = 2)

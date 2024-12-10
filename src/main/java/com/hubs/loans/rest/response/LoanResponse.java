@@ -1,4 +1,4 @@
-package com.hubs.loans.dto;
+package com.hubs.loans.rest.response;
 
 import com.hubs.loans.domain.entity.Loan;
 
