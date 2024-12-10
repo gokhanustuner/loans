@@ -1,7 +1,7 @@
 package com.hubs.loans.rest.request;
 
 import com.hubs.loans.application.command.CreateLoanCommand;
-import com.hubs.loans.application.validator.NumberOfInstallments;
+import com.hubs.loans.application.validator.ValidNumberOfInstallments;
 import com.hubs.loans.domain.value.customer.CustomerId;
 import com.hubs.loans.domain.value.loan.InterestRate;
 import jakarta.validation.constraints.*;
@@ -12,7 +12,7 @@ public record CreateLoanRequest(
         @NotNull UUID customerId,
         @NotNull @DecimalMin("0.01") BigDecimal amount,
         @NotNull @DecimalMin("0.1") @DecimalMax("0.5") double interestRate,
-        @NotNull @NumberOfInstallments int numberOfInstallments
+        @NotNull @ValidNumberOfInstallments int numberOfInstallments
 ) {
         public CreateLoanCommand toCommand() {
                 return new CreateLoanCommand(

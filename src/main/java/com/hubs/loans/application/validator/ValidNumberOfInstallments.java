@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy = NumberOfInstallmentsValidator.class)
-public @interface NumberOfInstallments {
+public @interface ValidNumberOfInstallments {
     String message() default "Number of installments can only be 6, 9, 12, or 24";
 
     Class<?>[] groups() default {};
