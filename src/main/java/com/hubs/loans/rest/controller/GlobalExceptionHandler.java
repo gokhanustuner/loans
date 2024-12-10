@@ -1,4 +1,4 @@
-package com.hubs.loans.controller;
+package com.hubs.loans.rest.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;

@@ -10,7 +10,7 @@ public record LoanResponse(UUID id, BigDecimal amount, int numberOfInstallments,
         return new LoanResponse(
                 loan.getId(),
                 loan.getLoanAmount().amount(),
-                loan.getNumberOfInstallments(),
+                loan.getNumberOfInstallments().value(),
                 loan.getIsPaid()
         );
     }

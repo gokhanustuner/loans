@@ -1,4 +1,4 @@
-package com.hubs.loans.controller;
+package com.hubs.loans.rest.controller;
 
 import com.hubs.loans.application.query.InstallmentsQuery;
 import com.hubs.loans.application.query.ListLoansQuery;

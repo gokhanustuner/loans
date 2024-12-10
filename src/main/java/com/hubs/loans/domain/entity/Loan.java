@@ -1,5 +1,6 @@
 package com.hubs.loans.domain.entity;
 
+import com.hubs.loans.domain.value.installment.NumberOfInstallments;
 import com.hubs.loans.domain.value.loan.LoanAmount;
 import com.hubs.loans.domain.value.loan.LoanId;
 import jakarta.persistence.*;
@@ -8,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +32,7 @@ public class Loan {
     private LoanAmount loanAmount;
 
     @Column(nullable = false)
-    private Integer numberOfInstallments;
+    private NumberOfInstallments numberOfInstallments;
 
     @Column(nullable = false)
     @CreationTimestamp
@@ -55,7 +55,7 @@ public class Loan {
 
     public BigDecimal calculateInstallmentAmount() {
         return loanAmount.amount().divide(
-                BigDecimal.valueOf(numberOfInstallments),
+                BigDecimal.valueOf(numberOfInstallments.value()),
                 RoundingMode.HALF_UP
         );
     }

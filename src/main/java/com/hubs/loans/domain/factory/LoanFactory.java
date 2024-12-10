@@ -6,6 +6,7 @@ import com.hubs.loans.domain.entity.Installment;
 import com.hubs.loans.domain.exception.InsufficientCreditLimitException;
 import com.hubs.loans.domain.repository.CustomerRepository;
 import com.hubs.loans.domain.value.customer.CustomerId;
+import com.hubs.loans.domain.value.installment.NumberOfInstallments;
 import com.hubs.loans.domain.value.loan.InterestRate;
 import com.hubs.loans.domain.value.loan.LoanAmount;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class LoanFactory {
             CustomerId customerId,
             BigDecimal amount,
             InterestRate interestRate,
-            int numberOfInstallments
+            NumberOfInstallments numberOfInstallments
     ) {
         Customer customer = customerRepository.findById(customerId);
         LoanAmount loanAmount = LoanAmount.of(amount, interestRate);

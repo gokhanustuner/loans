@@ -1,4 +1,4 @@
-package com.hubs.loans.controller;
+package com.hubs.loans.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

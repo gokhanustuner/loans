@@ -2,6 +2,7 @@ package com.hubs.loans.domain.entity;
 
 import com.hubs.loans.domain.value.customer.CreditLimit;
 import com.hubs.loans.domain.value.customer.CustomerId;
+import com.hubs.loans.domain.value.installment.NumberOfInstallments;
 import com.hubs.loans.domain.value.loan.LoanAmount;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class Customer {
     @Embedded
     private CreditLimit creditLimit = new CreditLimit(BigDecimal.ZERO, BigDecimal.ZERO);
 
-    public Loan makeLoan(LoanAmount loanAmount, int numberOfInstallments) {
+    public Loan makeLoan(LoanAmount loanAmount, NumberOfInstallments numberOfInstallments) {
         return Loan.builderWithId()
                 .customer(this)
                 .loanAmount(loanAmount)
