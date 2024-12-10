@@ -37,9 +37,6 @@ public class LoanService {
         return loanRepository.findByCustomerId(listLoansQuery.customerId(), listLoansQuery.page());
     }
 
-    // Credit limitler kilitlenmeli
-    // Loan, Installmentlar, ve Limitler transactional olmalı
-    // Customer'ın kredi limiti yeniden hesaplanacak ve database'e yazılacak
     public void payLoan() {
 
     }
