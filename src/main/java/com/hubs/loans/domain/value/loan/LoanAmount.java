@@ -9,9 +9,9 @@ public record LoanAmount(BigDecimal rawAmount, BigDecimal amount) {
     public final static BigDecimal MIN = BigDecimal.valueOf(1000);
 
     public LoanAmount {
-        if (isRawAmountLessThanMin()) {
+        if (rawAmount.compareTo(MIN) < 0) {
             throw new InvalidLoanAmountException("rawAmount must be greater than or equal to 1000");
-        } else if (isRawAmountGreaterThanOrEqualToAmount()) {
+        } else if (rawAmount.compareTo(amount) >= 0) {
             throw new InvalidLoanAmountException("value must be greater than rawAmount");
         }
     }
@@ -21,13 +21,5 @@ public record LoanAmount(BigDecimal rawAmount, BigDecimal amount) {
                 rawAmount,
                 rawAmount.multiply(BigDecimal.valueOf(1 + interestRate.value()))
         );
-    }
-
-    private boolean isRawAmountLessThanMin() {
-        return rawAmount().compareTo(MIN) < 0;
-    }
-
-    private boolean isRawAmountGreaterThanOrEqualToAmount() {
-        return rawAmount().compareTo(amount()) >= 0;
     }
 }

@@ -14,11 +14,11 @@ public record CreditLimit(
 ) {
 
     public CreditLimit {
-        if (usedCreditLimitLessThanZero() && creditLimitLessThanZero()) {
+        if (usedCreditLimit.compareTo(BigDecimal.ZERO) < 0 && creditLimit.compareTo(BigDecimal.ZERO) < 0) {
             throw new InvalidCreditLimitException("usedCreditLimit and creditLimit are invalid values");
-        } else if (usedCreditLimitLessThanZero() && creditLimitGreaterThanAndEqualToZero()) {
+        } else if (usedCreditLimit.compareTo(BigDecimal.ZERO) < 0 && creditLimit.compareTo(BigDecimal.ZERO) >= 0) {
             throw new InvalidCreditLimitException("usedCreditLimit is an invalid value");
-        } else if (usedCreditLimitGreaterThanAndEqualToZero() && creditLimitLessThanZero()) {
+        } else if (usedCreditLimit.compareTo(BigDecimal.ZERO) >= 0 && creditLimit.compareTo(BigDecimal.ZERO) < 0) {
             throw new InvalidCreditLimitException("creditLimit is an invalid value");
         }
     }
@@ -26,21 +26,5 @@ public record CreditLimit(
     public boolean isInsufficient(LoanAmount loanAmount) {
         return creditLimit.subtract(usedCreditLimit)
                 .compareTo(loanAmount.rawAmount()) < 0;
-    }
-
-    private boolean usedCreditLimitLessThanZero() {
-        return usedCreditLimit().compareTo(BigDecimal.ZERO) < 0;
-    }
-
-    private boolean creditLimitLessThanZero() {
-        return usedCreditLimit().compareTo(BigDecimal.ZERO) < 0;
-    }
-
-    private boolean usedCreditLimitGreaterThanAndEqualToZero() {
-        return usedCreditLimit().compareTo(BigDecimal.ZERO) >= 0;
-    }
-
-    private boolean creditLimitGreaterThanAndEqualToZero() {
-        return creditLimit().compareTo(BigDecimal.ZERO) >= 0;
     }
 }

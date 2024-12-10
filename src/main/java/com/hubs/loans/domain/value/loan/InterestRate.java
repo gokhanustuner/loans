@@ -9,11 +9,7 @@ public record InterestRate(double value) {
     public final static double MAX = 0.5;
 
     public InterestRate {
-        if (!isRateBetweenMinAndMax())
+        if (value < MIN || value > MAX)
             throw new InvalidInterestRateException(String.format("Interest Rate must be between %s and %s", MIN, MAX));
-    }
-
-    private boolean isRateBetweenMinAndMax() {
-        return value() < MIN || value() > MAX;
     }
 }
