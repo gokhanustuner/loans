@@ -11,6 +11,8 @@ public record LoanAmount(BigDecimal rawAmount, BigDecimal amount) {
     public LoanAmount {
         if (rawAmount.compareTo(MIN) < 0) {
             throw new InvalidLoanAmountException("rawAmount must be greater than or equal to 1000");
+        } else if (rawAmount.compareTo(amount) >= 0) {
+            throw new InvalidLoanAmountException("amount must be greater than rawAmount");
         }
     }
 
