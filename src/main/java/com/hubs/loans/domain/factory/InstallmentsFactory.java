@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InstallmentsFactory {
 
-    public List<Installment> createInstallments(Loan loan) {
+    public List<Installment> createInstallmentsWithLoan(Loan loan) {
         List<Installment> installments = new ArrayList<>();
 
         for (int i = 1; i <= loan.getNumberOfInstallments().value(); i++) {
