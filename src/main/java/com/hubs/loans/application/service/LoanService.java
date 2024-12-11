@@ -30,7 +30,7 @@ public class LoanService {
         Customer customer = customerRepository.findById(createLoanCommand.customerId());
 
         return loanRepository.save(
-                loanFactory.createLoan(
+                loanFactory.createLoanWithCustomer(
                     customer,
                     LoanAmount.of(createLoanCommand.loanAmount(), createLoanCommand.interestRate()),
                     createLoanCommand.numberOfInstallments()

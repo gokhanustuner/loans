@@ -16,12 +16,8 @@ public class LoanFactory {
 
     private final InstallmentsFactory installmentsFactory;
 
-    public Loan createLoan(
-            Customer customer,
-            LoanAmount loanAmount,
-            NumberOfInstallments numberOfInstallments
-    ) {
-        Loan loan = customer.makeLoan(loanAmount, numberOfInstallments);
+    public Loan createLoanWithCustomer(Customer customer, LoanAmount loanAmount, NumberOfInstallments numInstallments) {
+        Loan loan = customer.makeLoan(loanAmount, numInstallments);
 
         List<Installment> installments = installmentsFactory.createInstallments(loan);
         loan.setInstallments(installments);
