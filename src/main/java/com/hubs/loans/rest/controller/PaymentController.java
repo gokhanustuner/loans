@@ -1,7 +1,6 @@
 package com.hubs.loans.rest.controller;
 
 import com.hubs.loans.application.service.PaymentService;
-import com.hubs.loans.domain.entity.Loan;
 import com.hubs.loans.domain.value.loan.PayLoanResult;
 import com.hubs.loans.rest.request.PayLoanRequest;
 import com.hubs.loans.rest.response.PayLoanResponse;

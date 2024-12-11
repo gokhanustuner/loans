@@ -1,7 +1,6 @@
 package com.hubs.loans.application.service;
 
 import com.hubs.loans.application.command.CreateLoanCommand;
-import com.hubs.loans.application.command.PayLoanCommand;
 import com.hubs.loans.application.query.ListLoansQuery;
 import com.hubs.loans.domain.entity.Customer;
 import com.hubs.loans.domain.factory.LoanFactory;
