@@ -17,4 +17,5 @@ public class InstallmentService {
     public List<Installment> listInstallments(ListInstallmentsQuery listInstallmentsQuery) {
         return installmentRepository.findByLoanId(listInstallmentsQuery.loanId());
     }
+
 }

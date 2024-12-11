@@ -7,6 +7,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +18,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @IdClass(InstallmentId.class)
 public class Installment {
+
+    private final static double EARLY_PAYMENT_DISCOUNT_FACTOR = 0.001;
+
+    private final static double LATE_PAYMENT_PENALTY_FACTOR = 0.001;
 
     @Id
     private UUID id;
@@ -41,6 +46,87 @@ public class Installment {
     private boolean isPaid;
 
     private transient int number;
+
+    public boolean notIsPaid() {
+        return !isPaid;
+    }
+
+    public boolean isPayableWithAmount(BigDecimal payAmount) {
+        return amount.compareTo(payAmount) <= 0;
+    }
+
+    public boolean isPayableToday() {
+        LocalDate now = LocalDate.now();
+        return now.isAfter(dueDate) || dueDate.isEqual(now) || now.plusMonths(3).isAfter(dueDate);
+    }
+
+    public boolean isPaidLate() {
+        LocalDate now = LocalDate.now();
+        return now.isAfter(dueDate);
+    }
+
+    public boolean isPaidEarly() {
+        LocalDate now = LocalDate.now();
+        return now.isBefore(dueDate);
+    }
+
+    public long daysAfterDueDate() {
+        LocalDate now = LocalDate.now();
+
+        if (now.isBefore(dueDate)) {
+            return ChronoUnit.DAYS.between(dueDate, now);
+        }
+
+        return 0;
+    }
+
+    public long daysBeforeDueDate() {
+        LocalDate now = LocalDate.now();
+
+        if (now.isBefore(dueDate)) {
+            return ChronoUnit.DAYS.between(now, dueDate);
+        }
+
+        return 0;
+    }
+
+    public void pay() {
+        if (isPaidEarly()) {
+            payWithDiscount();
+        } else if (isPaidLate()) {
+            payWithPenalty();
+        } else {
+            setPaidAmount(amount);
+            setPaymentDate(LocalDateTime.now());
+            setPaid(true);
+        }
+
+        loan.decreaseCustomersUsedCreditLimit(amount);
+    }
+
+    public void payWithDiscount() {
+        setPaidAmount(
+                amount.subtract(
+                        amount.multiply(
+                                BigDecimal.valueOf(EARLY_PAYMENT_DISCOUNT_FACTOR)
+                        ).multiply(BigDecimal.valueOf(daysBeforeDueDate()))
+                )
+        );
+        setPaymentDate(LocalDateTime.now());
+        setPaid(true);
+    }
+
+    public void payWithPenalty() {
+        setPaidAmount(
+                amount.subtract(
+                        amount.add(
+                                BigDecimal.valueOf(LATE_PAYMENT_PENALTY_FACTOR)
+                        ).multiply(BigDecimal.valueOf(daysAfterDueDate()))
+                )
+        );
+        setPaymentDate(LocalDateTime.now());
+        setPaid(true);
+    }
 
     public static Installment.InstallmentBuilder builderWithIdAndDueDate(int number) {
         LocalDate today = LocalDate.now();

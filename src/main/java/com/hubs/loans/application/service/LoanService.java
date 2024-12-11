@@ -1,6 +1,7 @@
 package com.hubs.loans.application.service;
 
 import com.hubs.loans.application.command.CreateLoanCommand;
+import com.hubs.loans.application.command.PayLoanCommand;
 import com.hubs.loans.application.query.ListLoansQuery;
 import com.hubs.loans.domain.entity.Customer;
 import com.hubs.loans.domain.factory.LoanFactory;
@@ -42,10 +43,4 @@ public class LoanService {
     public List<Loan> listLoans(ListLoansQuery listLoansQuery) {
         return loanRepository.findByCustomerId(listLoansQuery.customerId(), listLoansQuery.page());
     }
-
-    public void payLoan() {
-
-    }
-
-
 }

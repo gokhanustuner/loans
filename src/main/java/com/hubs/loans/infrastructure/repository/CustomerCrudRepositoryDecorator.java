@@ -5,6 +5,7 @@ import com.hubs.loans.domain.exception.CustomerNotFoundException;
 import com.hubs.loans.domain.repository.CustomerRepository;
 import com.hubs.loans.domain.value.customer.CustomerId;
 import com.hubs.loans.infrastructure.repository.jpa.CustomerCrudRepository;
+import jakarta.persistence.LockTimeoutException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,11 @@ public class CustomerCrudRepositoryDecorator implements CustomerRepository {
 
     @Override
     public Customer findById(CustomerId customerId) {
-        return customerCrudRepository.findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+        try {
+            return customerCrudRepository.findByIdWithLock(customerId.id())
+                    .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+        } catch (LockTimeoutException e) {
+            throw new RuntimeException("System error");
+        }
     }
 }

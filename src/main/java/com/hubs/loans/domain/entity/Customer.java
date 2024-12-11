@@ -35,7 +35,7 @@ public class Customer {
             throw new InsufficientCreditLimitException("Insufficient credit limit");
         }
 
-        increaseUsedCreditLimit(loanAmount.rawAmount());
+        increaseUsedCreditLimit(loanAmount.amount());
 
         return Loan.builderWithId()
                 .customer(this)
@@ -47,5 +47,9 @@ public class Customer {
 
     public void increaseUsedCreditLimit(BigDecimal amount) {
         setCreditLimit(new CreditLimit(creditLimit.usedCreditLimit().add(amount), creditLimit.creditLimit()));
+    }
+
+    public void decreaseUsedCreditLimit(BigDecimal amount) {
+        setCreditLimit(new CreditLimit(creditLimit.usedCreditLimit().subtract(amount), creditLimit.creditLimit()));
     }
 }

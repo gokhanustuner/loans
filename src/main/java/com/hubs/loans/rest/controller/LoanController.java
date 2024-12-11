@@ -1,9 +1,13 @@
 package com.hubs.loans.rest.controller;
 
+import com.hubs.loans.application.query.ListInstallmentsQuery;
 import com.hubs.loans.application.query.ListLoansQuery;
+import com.hubs.loans.application.service.InstallmentService;
 import com.hubs.loans.application.service.LoanService;
+import com.hubs.loans.domain.entity.Installment;
 import com.hubs.loans.domain.entity.Loan;
 import com.hubs.loans.rest.request.CreateLoanRequest;
+import com.hubs.loans.rest.response.InstallmentResponse;
 import com.hubs.loans.rest.response.LoanResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -23,10 +27,9 @@ public class LoanController {
 
     private final LoanService loanService;
 
-    @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    private final InstallmentService installmentService;
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoanResponse> createLoan(@Valid @RequestBody CreateLoanRequest createLoanRequest) {
         Loan loan = loanService.createLoan(createLoanRequest.toCommand());
         return ResponseEntity.ok(LoanResponse.from(loan));
@@ -41,6 +44,16 @@ public class LoanController {
         List<LoanResponse> response = loans.stream()
                 .map(LoanResponse::from)
                 .toList();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/{loanId}/installments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InstallmentResponse>> listInstallments(@PathVariable UUID loanId) {
+        List<Installment> installments = installmentService.listInstallments(ListInstallmentsQuery.of(loanId));
+        List<InstallmentResponse> response = installments.stream()
+                .map(InstallmentResponse::from)
+                .toList();
+
         return ResponseEntity.ok(response);
     }
 }

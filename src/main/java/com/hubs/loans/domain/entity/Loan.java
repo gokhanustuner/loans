@@ -42,6 +42,7 @@ public class Loan {
     private Boolean isPaid;
 
     @OneToMany(mappedBy = "loan", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("dueDate ASC")
     private List<Installment> installments;
 
     public Installment makeInstallment(int number) {
@@ -53,11 +54,23 @@ public class Loan {
                 .build();
     }
 
+    public List<Installment> unpaidInstallments() {
+        return installments.stream().filter(Installment::notIsPaid).toList();
+    }
+
     public BigDecimal calculateInstallmentAmount() {
         return loanAmount.amount().divide(
                 BigDecimal.valueOf(numberOfInstallments.value()),
                 RoundingMode.HALF_UP
         );
+    }
+
+    public void complete() {
+        setIsPaid(true);
+    }
+
+    public void decreaseCustomersUsedCreditLimit(BigDecimal amount) {
+        customer.decreaseUsedCreditLimit(amount);
     }
 
     public static LoanBuilder builderWithId() {
