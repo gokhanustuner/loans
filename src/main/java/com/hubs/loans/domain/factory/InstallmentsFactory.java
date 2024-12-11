@@ -13,10 +13,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InstallmentsFactory {
 
-    public List<Installment> createInstallments(Loan loan, NumberOfInstallments numberOfInstallments) {
+    public List<Installment> createInstallments(Loan loan) {
         List<Installment> installments = new ArrayList<>();
 
-        for (int i = 1; i <= numberOfInstallments.value(); i++) {
+        for (int i = 1; i <= loan.getNumberOfInstallments().value(); i++) {
             Installment installment = loan.makeInstallment(i);
 
             installments.add(installment);

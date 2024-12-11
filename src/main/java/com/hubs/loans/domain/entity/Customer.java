@@ -1,5 +1,6 @@
 package com.hubs.loans.domain.entity;
 
+import com.hubs.loans.domain.exception.InsufficientCreditLimitException;
 import com.hubs.loans.domain.value.customer.CreditLimit;
 import com.hubs.loans.domain.value.customer.CustomerId;
 import com.hubs.loans.domain.value.installment.NumberOfInstallments;
@@ -30,6 +31,12 @@ public class Customer {
     private CreditLimit creditLimit = new CreditLimit(BigDecimal.ZERO, BigDecimal.ZERO);
 
     public Loan makeLoan(LoanAmount loanAmount, NumberOfInstallments numberOfInstallments) {
+        if (creditLimitIsInsufficient(loanAmount)) {
+            throw new InsufficientCreditLimitException("Insufficient credit limit");
+        }
+
+        increaseUsedCreditLimit(loanAmount.rawAmount());
+
         return Loan.builderWithId()
                 .customer(this)
                 .loanAmount(loanAmount)
@@ -38,7 +45,7 @@ public class Customer {
                 .build();
     }
 
-    public boolean hasInsufficientCreditLimit(LoanAmount loanAmount) {
+    public boolean creditLimitIsInsufficient(LoanAmount loanAmount) {
         return creditLimit.isInsufficient(loanAmount);
     }
 

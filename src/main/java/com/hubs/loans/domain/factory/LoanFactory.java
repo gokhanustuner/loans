@@ -3,9 +3,6 @@ package com.hubs.loans.domain.factory;
 import com.hubs.loans.domain.entity.Customer;
 import com.hubs.loans.domain.entity.Loan;
 import com.hubs.loans.domain.entity.Installment;
-import com.hubs.loans.domain.exception.InsufficientCreditLimitException;
-import com.hubs.loans.domain.repository.CustomerRepository;
-import com.hubs.loans.domain.value.customer.CustomerId;
 import com.hubs.loans.domain.value.installment.NumberOfInstallments;
 import com.hubs.loans.domain.value.loan.InterestRate;
 import com.hubs.loans.domain.value.loan.LoanAmount;
@@ -19,27 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoanFactory {
 
-    private final CustomerRepository customerRepository;
-
     private final InstallmentsFactory installmentsFactory;
 
     public Loan createLoan(
-            CustomerId customerId,
-            BigDecimal amount,
-            InterestRate interestRate,
+            Customer customer,
+            LoanAmount loanAmount,
             NumberOfInstallments numberOfInstallments
     ) {
-        Customer customer = customerRepository.findById(customerId);
-        LoanAmount loanAmount = LoanAmount.of(amount, interestRate);
-
-        if (customer.hasInsufficientCreditLimit(loanAmount)) {
-            throw new InsufficientCreditLimitException("Insufficient credit limit");
-        }
-
-        customer.increaseUsedCreditLimit(loanAmount.rawAmount());
         Loan loan = customer.makeLoan(loanAmount, numberOfInstallments);
 
-        List<Installment> installments = installmentsFactory.createInstallments(loan, numberOfInstallments);
+        List<Installment> installments = installmentsFactory.createInstallments(loan);
         loan.setInstallments(installments);
 
         return loan;
