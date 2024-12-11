@@ -1,6 +1,5 @@
 package com.hubs.loans.domain.value.loan;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 public record LoanId(UUID id) {
