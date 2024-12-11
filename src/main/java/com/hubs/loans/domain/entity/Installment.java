@@ -52,7 +52,12 @@ public class Installment {
     }
 
     public boolean isPayableWithAmount(BigDecimal payAmount) {
-        return amount.compareTo(payAmount) <= 0;
+        if (isPaidEarly())
+            return calculateDiscountedAmount().compareTo(payAmount) <= 0;
+        else if (isPaidLate())
+            return calculatePenalizedAmount().compareTo(payAmount) <= 0;
+        else
+            return amount.compareTo(payAmount) <= 0;
     }
 
     public boolean isPayableToday() {
@@ -105,25 +110,29 @@ public class Installment {
     }
 
     public void payWithDiscount() {
-        setPaidAmount(
-                amount.subtract(
-                        amount.multiply(
-                                BigDecimal.valueOf(EARLY_PAYMENT_DISCOUNT_FACTOR)
-                        ).multiply(BigDecimal.valueOf(daysBeforeDueDate()))
-                )
-        );
+        setPaidAmount(calculateDiscountedAmount());
         setPaymentDate(LocalDateTime.now());
         setPaid(true);
     }
 
-    public void payWithPenalty() {
-        setPaidAmount(
-                amount.subtract(
-                        amount.add(
-                                BigDecimal.valueOf(LATE_PAYMENT_PENALTY_FACTOR)
-                        ).multiply(BigDecimal.valueOf(daysAfterDueDate()))
-                )
+    public BigDecimal calculateDiscountedAmount() {
+        return amount.subtract(
+                amount.multiply(
+                        BigDecimal.valueOf(EARLY_PAYMENT_DISCOUNT_FACTOR)
+                ).multiply(BigDecimal.valueOf(daysBeforeDueDate()))
         );
+    }
+
+    public BigDecimal calculatePenalizedAmount() {
+        return amount.subtract(
+                amount.add(
+                        BigDecimal.valueOf(LATE_PAYMENT_PENALTY_FACTOR)
+                ).multiply(BigDecimal.valueOf(daysAfterDueDate()))
+        );
+    }
+
+    public void payWithPenalty() {
+        setPaidAmount(calculatePenalizedAmount());
         setPaymentDate(LocalDateTime.now());
         setPaid(true);
     }
