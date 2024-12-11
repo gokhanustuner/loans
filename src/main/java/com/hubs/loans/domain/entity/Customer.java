@@ -31,7 +31,7 @@ public class Customer {
     private CreditLimit creditLimit = new CreditLimit(BigDecimal.ZERO, BigDecimal.ZERO);
 
     public Loan makeLoan(LoanAmount loanAmount, NumberOfInstallments numberOfInstallments) {
-        if (creditLimitIsInsufficient(loanAmount)) {
+        if (creditLimit.isInsufficient(loanAmount)) {
             throw new InsufficientCreditLimitException("Insufficient credit limit");
         }
 
@@ -43,10 +43,6 @@ public class Customer {
                 .numberOfInstallments(numberOfInstallments)
                 .isPaid(false)
                 .build();
-    }
-
-    public boolean creditLimitIsInsufficient(LoanAmount loanAmount) {
-        return creditLimit.isInsufficient(loanAmount);
     }
 
     public void increaseUsedCreditLimit(BigDecimal amount) {
