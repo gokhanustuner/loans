@@ -10,21 +10,21 @@ import java.math.BigDecimal;
 @Service
 public class PayLoanService {
     public PayLoanResult pay(Loan loan, BigDecimal amount) {
-        BigDecimal remainingAmount = BigDecimal.valueOf(amount.doubleValue());
-        BigDecimal totalPaidAmount = BigDecimal.ZERO;
+        BigDecimal availableAmount = BigDecimal.valueOf(amount.doubleValue());
+        BigDecimal totalAmountPaid = BigDecimal.ZERO;
+        int numberOfInstallmentsPaid = 0;
 
         for (Installment unpaidInstallment : loan.unpaidInstallments()) {
-            if (unpaidInstallment.isPayableToday() && unpaidInstallment.isPayableWithAmount(remainingAmount)) {
+            if (unpaidInstallment.isPayableToday() && unpaidInstallment.isPayableWithAmount(availableAmount)) {
                 unpaidInstallment.pay();
-                remainingAmount = remainingAmount.subtract(unpaidInstallment.getPaidAmount());
-                totalPaidAmount = totalPaidAmount.add(unpaidInstallment.getPaidAmount());
+                availableAmount = availableAmount.subtract(unpaidInstallment.getPaidAmount());
+                totalAmountPaid = totalAmountPaid.add(unpaidInstallment.getPaidAmount());
+                numberOfInstallmentsPaid++;
             }
         }
 
-        if (loan.unpaidInstallments().isEmpty()) {
-            loan.complete();
-        }
+        if (loan.unpaidInstallments().isEmpty()) loan.complete();
 
-        return new PayLoanResult();
+        return new PayLoanResult(numberOfInstallmentsPaid, totalAmountPaid, loan.getIsPaid());
     }
 }

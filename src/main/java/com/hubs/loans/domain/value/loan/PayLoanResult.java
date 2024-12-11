@@ -1,4 +1,5 @@
 package com.hubs.loans.domain.value.loan;
 
-public record PayLoanResult() {
-}
+import java.math.BigDecimal;
+
+public record PayLoanResult(int numberOfInstallmentsPaid, BigDecimal paidAmount, boolean isPaid) {}
