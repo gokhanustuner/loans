@@ -21,7 +21,7 @@ public class PaymentController {
 
     @PostMapping(value = "/{loanId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PayLoanResponse> payLoan(@PathVariable UUID loanId, @Valid @RequestBody PayLoanRequest payLoanRequest) {
-        PayLoanResult payLoanResult = paymentService.payLoan(payLoanRequest.toCommandWith(loanId));
+        PayLoanResult payLoanResult = paymentService.payLoan(payLoanRequest.toCommandWithLoanId(loanId));
 
         return ResponseEntity.ok(PayLoanResponse.from(payLoanResult));
     }

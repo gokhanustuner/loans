@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record PayLoanRequest(@NotNull @DecimalMin("0.01") BigDecimal amount) {
-    public PayLoanCommand toCommandWith(UUID loanId) {
+    public PayLoanCommand toCommandWithLoanId(UUID loanId) {
         return new PayLoanCommand(new LoanId(loanId), amount);
     }
 }

@@ -10,6 +10,7 @@ import java.util.UUID;
 public record InstallmentResponse(
         UUID id,
         BigDecimal amount,
+        BigDecimal paidAmount,
         LocalDate dueDate,
         boolean isPaid,
         LocalDateTime paymentDate
@@ -18,6 +19,7 @@ public record InstallmentResponse(
         return new InstallmentResponse(
                 installment.getId(),
                 installment.getAmount(),
+                installment.getPaidAmount(),
                 installment.getDueDate(),
                 installment.isPaid(),
                 installment.getPaymentDate()
