@@ -396,7 +396,7 @@ public class InstallmentTest {
         );
 
         Installment installment = loan.makeInstallment(1);
-        installment.setDueDate(installment.getDueDate().minusDays(5));
+        installment.setDueDate(LocalDate.now().minusDays(5));
         BigDecimal customerInitialUsedCreditLimit = installment.customer().usedCreditLimit();
 
         installment.pay();
