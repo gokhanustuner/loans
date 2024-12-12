@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/customers/{customerId}")
+@RequestMapping("/api/customers/{customerId}/loans")
 @RequiredArgsConstructor
 public class LoanController {
 
@@ -28,7 +28,7 @@ public class LoanController {
 
     private final InstallmentService installmentService;
 
-    @PostMapping(value = "/loans", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoanResponse> createLoan(
             @PathVariable UUID customerId,
             @Valid @RequestBody CreateLoanRequest createLoanRequest
@@ -37,7 +37,7 @@ public class LoanController {
         return ResponseEntity.ok(LoanResponse.from(loan));
     }
 
-    @GetMapping(value = "/loans", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<LoanResponse>> listLoans(
             @PathVariable UUID customerId,
             @RequestParam @Min(1) int page
@@ -49,9 +49,9 @@ public class LoanController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/loans/{loanId}/installments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InstallmentResponse>> listInstallments(@PathVariable UUID loanId) {
-        List<Installment> installments = installmentService.listInstallments(ListInstallmentsQuery.of(loanId));
+    @GetMapping(value = "/{loanId}/installments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InstallmentResponse>> listInstallments(@PathVariable UUID customerId, @PathVariable UUID loanId) {
+        List<Installment> installments = installmentService.listInstallments(ListInstallmentsQuery.of(customerId, loanId));
         List<InstallmentResponse> response = installments.stream()
                 .map(InstallmentResponse::from)
                 .toList();

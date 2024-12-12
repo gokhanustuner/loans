@@ -23,4 +23,7 @@ public interface LoanJpaRepository extends JpaRepository<Loan, LoanId> {
     Optional<Loan> findByIdWithLock(@Param("id") UUID loanId);
 
     List<Loan> findByCustomerId(UUID customerId, Pageable pageable);
+
+    @Query("SELECT l FROM Loan l WHERE l.customer.id = :customerId AND l.id = :loanId")
+    Optional<Loan> findByCustomerIdAndLoanId(UUID customerId, UUID loanId);
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,6 +38,14 @@ public class LoanJpaRepositoryDecorator implements LoanRepository {
         return loanJpaRepository.findByCustomerId(
                 customerId.id(),
                 PageRequest.of(page, NUMBER_OF_ITEMS_PER_PAGE)
+        );
+    }
+
+    @Override
+    public Optional<Loan> findByCustomerIdAndLoanId(CustomerId customerId, LoanId loanId) {
+        return loanJpaRepository.findByCustomerIdAndLoanId(
+                customerId.id(),
+                loanId.id()
         );
     }
 

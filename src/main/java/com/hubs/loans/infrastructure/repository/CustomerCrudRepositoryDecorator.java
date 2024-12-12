@@ -9,6 +9,8 @@ import jakarta.persistence.LockTimeoutException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class CustomerCrudRepositoryDecorator implements CustomerRepository {
@@ -16,12 +18,17 @@ public class CustomerCrudRepositoryDecorator implements CustomerRepository {
     private final CustomerCrudRepository customerCrudRepository;
 
     @Override
-    public Customer findById(CustomerId customerId) {
+    public Customer findByIdWithLock(CustomerId customerId) {
         try {
             return customerCrudRepository.findByIdWithLock(customerId.id())
                     .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
         } catch (LockTimeoutException e) {
             throw new RuntimeException("System error");
         }
+    }
+
+    @Override
+    public Optional<Customer> findById(CustomerId customerId) {
+        return customerCrudRepository.findById(customerId);
     }
 }

@@ -12,4 +12,10 @@ public interface InstallmentCrudRepository extends CrudRepository<Installment, L
 
     @Query("SELECT i FROM Installment i WHERE i.loan.id = :loanId")
     List<Installment> findByLoanId(@Param("loanId") UUID loanId);
+
+    @Query("SELECT i FROM Installment i " +
+            "JOIN i.loan l " +
+            "JOIN l.customer c " +
+            "WHERE l.id = :loanId AND c.id = :customerId")
+    List<Installment> findByCustomerIdAndLoanId(@Param("customerId") UUID customerId, @Param("loanId") UUID loanId);
 }

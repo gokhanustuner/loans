@@ -24,7 +24,7 @@ public class LoanService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Loan createLoan(CreateLoanCommand createLoanCommand) {
-        Customer customer = customerRepository.findById(createLoanCommand.customerId());
+        Customer customer = customerRepository.findByIdWithLock(createLoanCommand.customerId());
         Loan loan = customer.makeLoanWithInstallments(
                 LoanAmount.of(
                         createLoanCommand.loanAmount(),
