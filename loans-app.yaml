@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  java-app:
+    image: loans-app:latest
+    container_name: loans-app-container
+    ports:
+      - "8080:8080"
