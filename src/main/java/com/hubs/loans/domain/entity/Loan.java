@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,7 +74,62 @@ public class Loan {
         customer.decreaseUsedCreditLimit(amount);
     }
 
+    public void payInstallmentWithDiscount(int installmentNumber) {
+        installments.get(installmentNumber).payWithDiscount();
+    }
+
+    public void payInstallmentWithPenalty(int installmentNumber) {
+        installments.get(installmentNumber).payWithPenalty();
+    }
+
+    public void payInstallmentOrdinary(int installmentNumber) {
+        installments.get(installmentNumber).payOrdinary();
+    }
+
     public static LoanBuilder builderWithId() {
         return builder().id(UUID.randomUUID());
+    }
+
+    public static LoanBuilderWithInstallments builderWithIdAndInstallments(
+            LoanAmount loanAmount,
+            NumberOfInstallments numberOfInstallments
+    ) {
+        LoanBuilder loanBuilder =
+                builderWithId().numberOfInstallments(numberOfInstallments)
+                        .loanAmount(loanAmount);
+
+        return new LoanBuilderWithInstallments(loanBuilder);
+    }
+
+    public static class LoanBuilderWithInstallments {
+        private final LoanBuilder loanBuilder;
+
+        public LoanBuilderWithInstallments(LoanBuilder loanBuilder) {
+            this.loanBuilder = loanBuilder;
+        }
+
+        public LoanBuilderWithInstallments customer(Customer customer) {
+            loanBuilder.customer(customer);
+
+            return this;
+        }
+
+        public LoanBuilderWithInstallments isPaid(boolean isPaid) {
+            loanBuilder.isPaid(isPaid);
+
+            return this;
+        }
+
+        public Loan build() {
+            Loan loan = loanBuilder.build();
+            List<Installment> installments = new ArrayList<>();
+
+            for (int i = 1; i <= loan.getNumberOfInstallments().value(); i++)
+                installments.add(loan.makeInstallment(i));
+
+            loan.setInstallments(installments);
+
+            return loan;
+        }
     }
 }

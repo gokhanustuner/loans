@@ -27,7 +27,7 @@ public class CustomerTest {
         LoanAmount loanAmount = LoanAmount.of(BigDecimal.valueOf(10000), new InterestRate(0.41));
         NumberOfInstallments numberOfInstallments = new NumberOfInstallments(12);
 
-        Loan loan = customer.makeLoan(loanAmount, numberOfInstallments);
+        Loan loan = customer.makeLoanWithInstallments(loanAmount, numberOfInstallments);
 
         assertEquals(loan.getCustomer(), customer);
         assertFalse(loan.getIsPaid());
@@ -50,7 +50,7 @@ public class CustomerTest {
         LoanAmount loanAmount = LoanAmount.of(BigDecimal.valueOf(15000), new InterestRate(0.41));
         NumberOfInstallments numberOfInstallments = new NumberOfInstallments(12);
 
-        assertThrows(InsufficientCreditLimitException.class, () -> customer.makeLoan(loanAmount, numberOfInstallments));
+        assertThrows(InsufficientCreditLimitException.class, () -> customer.makeLoanWithInstallments(loanAmount, numberOfInstallments));
 
         assertEquals(BigDecimal.ZERO, customer.usedCreditLimit());
     }

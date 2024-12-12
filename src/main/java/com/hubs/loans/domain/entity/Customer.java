@@ -34,17 +34,14 @@ public class Customer {
     @Embedded
     private CreditLimit creditLimit = new CreditLimit(BigDecimal.ZERO, BigDecimal.ZERO);
 
-    public Loan makeLoan(LoanAmount loanAmount, NumberOfInstallments numberOfInstallments) {
-        if (creditLimit.isInsufficient(loanAmount)) {
+    public Loan makeLoanWithInstallments(LoanAmount loanAmount, NumberOfInstallments numberOfInstallments) {
+        if (creditLimit.isInsufficient(loanAmount))
             throw new InsufficientCreditLimitException("Insufficient credit limit");
-        }
 
         increaseUsedCreditLimit(loanAmount.amount());
 
-        return Loan.builderWithId()
+        return Loan.builderWithIdAndInstallments(loanAmount, numberOfInstallments)
                 .customer(this)
-                .loanAmount(loanAmount)
-                .numberOfInstallments(numberOfInstallments)
                 .isPaid(false)
                 .build();
     }

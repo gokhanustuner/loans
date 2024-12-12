@@ -249,7 +249,7 @@ public class InstallmentTest {
                 "Doe",
                 new CreditLimit(BigDecimal.ZERO, BigDecimal.valueOf(90000))
         );
-        Loan loan = customer.makeLoan(
+        Loan loan = customer.makeLoanWithInstallments(
                 LoanAmount.of(
                         BigDecimal.valueOf(10000),
                         new InterestRate(0.5)
@@ -257,8 +257,8 @@ public class InstallmentTest {
                 new NumberOfInstallments(9)
         );
 
-        Installment installment = loan.makeInstallment(1);
-        BigDecimal customerInitialUsedCreditLimit = installment.customer().usedCreditLimit();
+        Installment installment = loan.getInstallments().get(0);
+        BigDecimal customerInitialUsedCreditLimit = customer.usedCreditLimit();
 
         installment.payWithDiscount();
 
@@ -283,15 +283,14 @@ public class InstallmentTest {
                 "Doe",
                 new CreditLimit(BigDecimal.ZERO, BigDecimal.valueOf(90000))
         );
-        Loan loan = customer.makeLoan(
+        Loan loan = customer.makeLoanWithInstallments(
                 LoanAmount.of(
                         BigDecimal.valueOf(10000),
                         new InterestRate(0.5)
                 ),
                 new NumberOfInstallments(9)
         );
-
-        Installment installment = loan.makeInstallment(1);
+        Installment installment = loan.getInstallments().get(0);
         BigDecimal customerInitialUsedCreditLimit = installment.customer().usedCreditLimit();
 
         installment.payWithPenalty();
@@ -317,7 +316,7 @@ public class InstallmentTest {
                 "Doe",
                 new CreditLimit(BigDecimal.ZERO, BigDecimal.valueOf(90000))
         );
-        Loan loan = customer.makeLoan(
+        Loan loan = customer.makeLoanWithInstallments(
                 LoanAmount.of(
                         BigDecimal.valueOf(10000),
                         new InterestRate(0.5)
@@ -325,7 +324,7 @@ public class InstallmentTest {
                 new NumberOfInstallments(9)
         );
 
-        Installment installment = loan.makeInstallment(1);
+        Installment installment = loan.getInstallments().get(0);
         BigDecimal customerInitialUsedCreditLimit = installment.customer().usedCreditLimit();
 
         installment.payOrdinary();
@@ -352,7 +351,7 @@ public class InstallmentTest {
                 new CreditLimit(BigDecimal.ZERO, BigDecimal.valueOf(90000))
         );
 
-        Loan loan = customer.makeLoan(
+        Loan loan = customer.makeLoanWithInstallments(
                 LoanAmount.of(
                         BigDecimal.valueOf(10000),
                         new InterestRate(0.5)
@@ -360,7 +359,7 @@ public class InstallmentTest {
                 new NumberOfInstallments(9)
         );
 
-        Installment installment = loan.makeInstallment(1);
+        Installment installment = loan.getInstallments().get(0);
         BigDecimal customerInitialUsedCreditLimit = installment.customer().usedCreditLimit();
 
         installment.pay();
@@ -387,7 +386,7 @@ public class InstallmentTest {
                 new CreditLimit(BigDecimal.ZERO, BigDecimal.valueOf(90000))
         );
 
-        Loan loan = customer.makeLoan(
+        Loan loan = customer.makeLoanWithInstallments(
                 LoanAmount.of(
                         BigDecimal.valueOf(10000),
                         new InterestRate(0.5)
@@ -395,7 +394,7 @@ public class InstallmentTest {
                 new NumberOfInstallments(9)
         );
 
-        Installment installment = loan.makeInstallment(1);
+        Installment installment = loan.getInstallments().get(0);
         installment.setDueDate(LocalDate.now().minusDays(5));
         BigDecimal customerInitialUsedCreditLimit = installment.customer().usedCreditLimit();
 
@@ -423,7 +422,7 @@ public class InstallmentTest {
                 new CreditLimit(BigDecimal.ZERO, BigDecimal.valueOf(90000))
         );
 
-        Loan loan = customer.makeLoan(
+        Loan loan = customer.makeLoanWithInstallments(
                 LoanAmount.of(
                         BigDecimal.valueOf(10000),
                         new InterestRate(0.5)
@@ -431,7 +430,7 @@ public class InstallmentTest {
                 new NumberOfInstallments(9)
         );
 
-        Installment installment = loan.makeInstallment(1);
+        Installment installment = loan.getInstallments().get(0);
         installment.setDueDate(LocalDate.now());
         BigDecimal customerInitialUsedCreditLimit = installment.customer().usedCreditLimit();
 
