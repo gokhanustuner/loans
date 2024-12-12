@@ -74,18 +74,6 @@ public class Loan {
         customer.decreaseUsedCreditLimit(amount);
     }
 
-    public void payInstallmentWithDiscount(int installmentNumber) {
-        installments.get(installmentNumber).payWithDiscount();
-    }
-
-    public void payInstallmentWithPenalty(int installmentNumber) {
-        installments.get(installmentNumber).payWithPenalty();
-    }
-
-    public void payInstallmentOrdinary(int installmentNumber) {
-        installments.get(installmentNumber).payOrdinary();
-    }
-
     public static LoanBuilder builderWithId() {
         return builder().id(UUID.randomUUID());
     }
@@ -101,12 +89,10 @@ public class Loan {
         return new LoanBuilderWithInstallments(loanBuilder);
     }
 
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static class LoanBuilderWithInstallments {
-        private final LoanBuilder loanBuilder;
 
-        public LoanBuilderWithInstallments(LoanBuilder loanBuilder) {
-            this.loanBuilder = loanBuilder;
-        }
+        private final LoanBuilder loanBuilder;
 
         public LoanBuilderWithInstallments customer(Customer customer) {
             loanBuilder.customer(customer);
