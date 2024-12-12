@@ -19,9 +19,9 @@ import java.util.UUID;
 @IdClass(InstallmentId.class)
 public class Installment {
 
-    private final static double EARLY_PAYMENT_DISCOUNT_FACTOR = 0.001;
+    public final static double EARLY_PAYMENT_DISCOUNT_FACTOR = 0.001;
 
-    private final static double LATE_PAYMENT_PENALTY_FACTOR = 0.001;
+    public final static double LATE_PAYMENT_PENALTY_FACTOR = 0.001;
 
     @Id
     private UUID id;
@@ -78,7 +78,7 @@ public class Installment {
     public long daysAfterDueDate() {
         LocalDate now = LocalDate.now();
 
-        if (now.isBefore(dueDate)) {
+        if (now.isAfter(dueDate)) {
             return ChronoUnit.DAYS.between(dueDate, now);
         }
 
@@ -101,11 +101,14 @@ public class Installment {
         } else if (isPaidLate()) {
             payWithPenalty();
         } else {
-            setPaidAmount(amount);
-            setPaymentDate(LocalDateTime.now());
-            setPaid(true);
+            payOrdinary();
         }
+    }
 
+    public void payOrdinary() {
+        setPaidAmount(amount);
+        setPaymentDate(LocalDateTime.now());
+        setPaid(true);
         loan.decreaseCustomersUsedCreditLimit(amount);
     }
 
@@ -113,6 +116,14 @@ public class Installment {
         setPaidAmount(calculateDiscountedAmount());
         setPaymentDate(LocalDateTime.now());
         setPaid(true);
+        loan.decreaseCustomersUsedCreditLimit(amount);
+    }
+
+    public void payWithPenalty() {
+        setPaidAmount(calculatePenalizedAmount());
+        setPaymentDate(LocalDateTime.now());
+        setPaid(true);
+        loan.decreaseCustomersUsedCreditLimit(amount);
     }
 
     public BigDecimal calculateDiscountedAmount() {
@@ -124,17 +135,15 @@ public class Installment {
     }
 
     public BigDecimal calculatePenalizedAmount() {
-        return amount.subtract(
-                amount.add(
+        return amount.add(
+                amount.multiply(
                         BigDecimal.valueOf(LATE_PAYMENT_PENALTY_FACTOR)
                 ).multiply(BigDecimal.valueOf(daysAfterDueDate()))
         );
     }
 
-    public void payWithPenalty() {
-        setPaidAmount(calculatePenalizedAmount());
-        setPaymentDate(LocalDateTime.now());
-        setPaid(true);
+    public Customer customer() {
+        return loan.getCustomer();
     }
 
     public static Installment.InstallmentBuilder builderWithIdAndDueDate(int numberOfInstallments) {
