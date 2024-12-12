@@ -26,14 +26,10 @@ class InstallmentsFactoryTest {
     @Test
     void create_installments_returns_correct_number_of_installments() {
         NumberOfInstallments numberOfInstallments = new NumberOfInstallments(6);
-
         Loan loan = Loan.builderWithId()
                 .loanAmount(LoanAmount.of(LoanAmount.MIN, new InterestRate(0.3)))
                 .numberOfInstallments(numberOfInstallments)
                 .build();
-
-
-        System.out.println("NumberOfInstallments: " + numberOfInstallments.value());
 
         List<Installment> installments = installmentsFactory.createInstallmentsWithLoan(loan);
 

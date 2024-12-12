@@ -15,11 +15,8 @@ public class InstallmentsFactory {
     public List<Installment> createInstallmentsWithLoan(Loan loan) {
         List<Installment> installments = new ArrayList<>();
 
-        for (int i = 1; i <= loan.getNumberOfInstallments().value(); i++) {
-            Installment installment = loan.makeInstallment(i);
-
-            installments.add(installment);
-        }
+        for (int i = 1; i <= loan.getNumberOfInstallments().value(); i++)
+            installments.add(loan.makeInstallment(i));
 
         return installments;
     }

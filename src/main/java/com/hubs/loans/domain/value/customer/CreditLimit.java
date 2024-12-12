@@ -27,4 +27,12 @@ public record CreditLimit(
         return creditLimit.subtract(usedCreditLimit)
                 .compareTo(loanAmount.rawAmount()) < 0;
     }
+
+    public BigDecimal increaseUsedCreditLimit(BigDecimal amount) {
+        return usedCreditLimit.add(amount);
+    }
+
+    public BigDecimal decreaseUsedCreditLimit(BigDecimal amount) {
+        return usedCreditLimit.subtract(amount);
+    }
 }

@@ -6,7 +6,9 @@ import com.hubs.loans.domain.value.customer.CustomerId;
 import com.hubs.loans.domain.value.installment.NumberOfInstallments;
 import com.hubs.loans.domain.value.loan.LoanAmount;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -16,6 +18,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @IdClass(CustomerId.class)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customer {
 
     @Id
@@ -46,10 +50,14 @@ public class Customer {
     }
 
     public void increaseUsedCreditLimit(BigDecimal amount) {
-        setCreditLimit(new CreditLimit(creditLimit.usedCreditLimit().add(amount), creditLimit.creditLimit()));
+        setCreditLimit(new CreditLimit(creditLimit.increaseUsedCreditLimit(amount), creditLimit.creditLimit()));
     }
 
     public void decreaseUsedCreditLimit(BigDecimal amount) {
-        setCreditLimit(new CreditLimit(creditLimit.usedCreditLimit().subtract(amount), creditLimit.creditLimit()));
+        setCreditLimit(new CreditLimit(creditLimit.decreaseUsedCreditLimit(amount), creditLimit.creditLimit()));
+    }
+
+    public BigDecimal usedCreditLimit() {
+        return creditLimit.usedCreditLimit();
     }
 }
