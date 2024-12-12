@@ -2,10 +2,7 @@
 
 
 echo "Compiling the project with maven"
-mvn clean install
-
-echo "Running unit tests"
-mvn test
+mvn clean test install
 
 echo "Creating docker image"
 docker build -t loans-app:latest .
