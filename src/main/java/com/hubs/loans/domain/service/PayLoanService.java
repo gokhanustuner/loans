@@ -6,15 +6,17 @@ import com.hubs.loans.domain.value.loan.PayLoanResult;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class PayLoanService {
     public PayLoanResult pay(Loan loan, BigDecimal amount) {
+        List<Installment> unpaidInstallments = loan.unpaidInstallments();
         BigDecimal availableAmount = BigDecimal.valueOf(amount.doubleValue());
         BigDecimal totalAmountPaid = BigDecimal.ZERO;
         int numberOfInstallmentsPaid = 0;
 
-        for (Installment unpaidInstallment : loan.unpaidInstallments()) {
+        for (Installment unpaidInstallment : unpaidInstallments) {
             if (unpaidInstallment.isPayableToday() && unpaidInstallment.isPayableWithAmount(availableAmount)) {
                 unpaidInstallment.pay();
                 availableAmount = availableAmount.subtract(unpaidInstallment.getPaidAmount());
@@ -23,7 +25,7 @@ public class PayLoanService {
             }
         }
 
-        if (loan.unpaidInstallments().isEmpty()) loan.complete();
+        if (unpaidInstallments.isEmpty()) loan.complete();
 
         return new PayLoanResult(numberOfInstallmentsPaid, totalAmountPaid, loan.getIsPaid());
     }

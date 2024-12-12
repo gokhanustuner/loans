@@ -17,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @IdClass(InstallmentId.class)
+@Table(name = "loan_installment")
 public class Installment {
 
     public final static double EARLY_PAYMENT_DISCOUNT_FACTOR = 0.001;
