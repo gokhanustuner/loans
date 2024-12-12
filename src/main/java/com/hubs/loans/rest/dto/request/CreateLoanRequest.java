@@ -1,4 +1,4 @@
-package com.hubs.loans.rest.request;
+package com.hubs.loans.rest.dto.request;
 
 import com.hubs.loans.application.command.CreateLoanCommand;
 import com.hubs.loans.application.validator.ValidNumberOfInstallments;
