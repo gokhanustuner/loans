@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerTest {
 
     @Test
-    public void customer_makes_loan_properly_and_keeps_its_credit_limit_state_consistent() {
+    public void customer_makes_loan_correctly_and_keeps_its_credit_limit_state_consistent() {
         Customer customer =
                 new Customer(
                         UUID.randomUUID(),

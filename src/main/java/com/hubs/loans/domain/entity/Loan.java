@@ -45,8 +45,8 @@ public class Loan {
     @OrderBy("dueDate ASC")
     private List<Installment> installments;
 
-    public Installment makeInstallment(int number) {
-        return Installment.builderWithIdAndDueDate(number)
+    public Installment makeInstallment(int installmentNumber) {
+        return Installment.builderWithIdAndDueDate(installmentNumber)
                 .loan(this)
                 .amount(calculateInstallmentAmount())
                 .paidAmount(BigDecimal.ZERO)

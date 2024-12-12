@@ -137,9 +137,9 @@ public class Installment {
         setPaid(true);
     }
 
-    public static Installment.InstallmentBuilder builderWithIdAndDueDate(int number) {
+    public static Installment.InstallmentBuilder builderWithIdAndDueDate(int numberOfInstallments) {
         LocalDate today = LocalDate.now();
-        LocalDate dueDate = today.withDayOfMonth(1).plusMonths(number);
+        LocalDate dueDate = today.withDayOfMonth(1).plusMonths(numberOfInstallments);
 
         return builder().id(UUID.randomUUID()).dueDate(dueDate);
     }
