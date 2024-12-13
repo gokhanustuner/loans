@@ -3,6 +3,7 @@ package com.hubs.loans.application.service;
 import com.hubs.loans.application.command.CreateLoanCommand;
 import com.hubs.loans.application.query.ListLoansQuery;
 import com.hubs.loans.domain.entity.Customer;
+import com.hubs.loans.domain.exception.CustomerNotFoundException;
 import com.hubs.loans.domain.repository.CustomerRepository;
 import com.hubs.loans.domain.repository.LoanRepository;
 import com.hubs.loans.domain.entity.Loan;
@@ -38,6 +39,16 @@ public class LoanService {
 
     @Transactional(readOnly = true)
     public List<Loan> listLoans(ListLoansQuery listLoansQuery) {
+        List<Loan> loans = loanRepository.findByCustomerId(
+                listLoansQuery.customerId(),
+                listLoansQuery.page()
+        );
+
+        if (loans.isEmpty()) {
+            customerRepository.findById(listLoansQuery.customerId())
+                    .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+        }
+
         return loanRepository.findByCustomerId(
                 listLoansQuery.customerId(),
                 listLoansQuery.page()

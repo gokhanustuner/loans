@@ -20,8 +20,10 @@ public class PaymentService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public PayLoanResult payLoan(PayLoanCommand payLoanCommand) {
-        Loan loan = loanRepository.findById(payLoanCommand.loanId());
-        return payLoanService.pay(loan, payLoanCommand.amount());
+        return payLoanService.pay(
+                loanRepository.findByIdWithLock(payLoanCommand.loanId()),
+                payLoanCommand.amount()
+        );
     }
 }
 

@@ -23,7 +23,7 @@ public class LoanJpaRepositoryDecorator implements LoanRepository {
     private final LoanJpaRepository loanJpaRepository;
 
     @Override
-    public Loan findById(LoanId loanId) {
+    public Loan findByIdWithLock(LoanId loanId) {
         try {
             return loanJpaRepository
                     .findByIdWithLock(loanId.id())
