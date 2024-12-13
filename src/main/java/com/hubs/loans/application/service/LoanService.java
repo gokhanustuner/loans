@@ -49,9 +49,6 @@ public class LoanService {
                     .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
         }
 
-        return loanRepository.findByCustomerId(
-                listLoansQuery.customerId(),
-                listLoansQuery.page()
-        );
+        return loans;
     }
 }
