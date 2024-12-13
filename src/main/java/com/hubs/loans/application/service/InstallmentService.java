@@ -36,10 +36,7 @@ public class InstallmentService {
                     .orElseThrow(() -> new LoanNotFoundException("Loan not found"));
         }
 
-        return installmentRepository.findByCustomerIdAndLoanId(
-                listInstallmentsQuery.customerId(),
-                listInstallmentsQuery.loanId()
-        );
+        return installments;
     }
 
 }
