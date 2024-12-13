@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerTest {
 
     @Test
-    public void customer_makes_loan_correctly_and_keeps_its_credit_limit_state_consistent() {
+    void customer_makes_loan_correctly_and_keeps_its_credit_limit_state_consistent() {
         Customer customer =
                 new Customer(
                         UUID.randomUUID(),
@@ -33,12 +33,11 @@ public class CustomerTest {
         assertFalse(loan.getIsPaid());
         assertEquals(loan.getLoanAmount(), loanAmount);
         assertEquals(loan.getNumberOfInstallments(), numberOfInstallments);
-
         assertEquals(customer.usedCreditLimit(), loanAmount.amount());
     }
 
     @Test
-    public void customer_has_insufficient_credit_limit_insufficient_credit_limit_exception_is_thrown() {
+    void customer_has_insufficient_credit_limit_insufficient_credit_limit_exception_is_thrown() {
         Customer customer =
                 new Customer(
                         UUID.randomUUID(),
@@ -51,12 +50,11 @@ public class CustomerTest {
         NumberOfInstallments numberOfInstallments = new NumberOfInstallments(12);
 
         assertThrows(InsufficientCreditLimitException.class, () -> customer.makeLoanWithInstallments(loanAmount, numberOfInstallments));
-
         assertEquals(BigDecimal.ZERO, customer.usedCreditLimit());
     }
 
     @Test
-    public void increase_used_credit_limit_correctly_increases_customers_used_credit_limit() {
+    void increase_used_credit_limit_correctly_increases_customers_used_credit_limit() {
         Customer customer =
                 new Customer(
                         UUID.randomUUID(),
@@ -71,7 +69,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void decrease_used_credit_limit_correctly_decreases_customers_used_credit_limit() {
+    void decrease_used_credit_limit_correctly_decreases_customers_used_credit_limit() {
         Customer customer =
                 new Customer(
                         UUID.randomUUID(),
@@ -86,7 +84,7 @@ public class CustomerTest {
     }
 
     @Test
-    public void used_credit_limit_returns_customers_used_credit_limit() {
+    void used_credit_limit_returns_customers_used_credit_limit() {
         Customer customer =
                 new Customer(
                         UUID.randomUUID(),

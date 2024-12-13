@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LoanTest {
 
     @Test
-    public void loan_makes_installment_correctly() {
+    void loan_makes_installment_correctly() {
         Loan loan = Loan.builderWithId()
                 .loanAmount(LoanAmount.of(LoanAmount.MIN, new InterestRate(0.35)))
                 .numberOfInstallments(new NumberOfInstallments(9))
@@ -25,7 +25,7 @@ public class LoanTest {
     }
 
     @Test
-    public void calculate_installment_amount_correctly_calculates() {
+    void calculate_installment_amount_correctly_calculates() {
         NumberOfInstallments numberOfInstallments = new NumberOfInstallments(9);
         BigDecimal loanRawAmount = BigDecimal.valueOf(1376);
 
@@ -46,20 +46,20 @@ public class LoanTest {
     }
 
     @Test
-    public void complete_sets_loan_is_paid_as_true() {
+    void complete_sets_loan_is_paid_as_true() {
         Loan loan = Loan.builderWithId().isPaid(false).build();
         loan.complete();
         assertTrue(loan.getIsPaid());
     }
 
     @Test
-    public void builder_with_id_returns_a_loan_with_a_uuid() {
+    void builder_with_id_returns_a_loan_with_a_uuid() {
         Loan loan = Loan.builderWithId().build();
         assertInstanceOf(UUID.class, loan.getId());
     }
 
     @Test
-    public void builder_with_id_and_installments_returns_a_loan_with_id_and_installments() {
+    void builder_with_id_and_installments_returns_a_loan_with_id_and_installments() {
         Loan loan = Loan.builderWithIdAndInstallments(
                 LoanAmount.of(LoanAmount.MIN, new InterestRate(0.4)),
                 new NumberOfInstallments(6)
@@ -70,7 +70,7 @@ public class LoanTest {
     }
 
     @Test
-    public void unpaid_installments_returns_installments_not_paid() {
+    void unpaid_installments_returns_installments_not_paid() {
         Loan loan = Loan.builder().build();
         Installment installmentOne = Installment.builder().isPaid(false).build();
         Installment installmentTwo = Installment.builder().isPaid(true).build();
