@@ -59,6 +59,17 @@ public class LoanTest {
     }
 
     @Test
+    public void builder_with_id_and_installments_returns_a_loan_with_id_and_installments() {
+        Loan loan = Loan.builderWithIdAndInstallments(
+                LoanAmount.of(LoanAmount.MIN, new InterestRate(0.4)),
+                new NumberOfInstallments(6)
+        ).build();
+
+        assertEquals(6, loan.getInstallments().size());
+        assertInstanceOf(UUID.class, loan.getId());
+    }
+
+    @Test
     public void unpaid_installments_returns_installments_not_paid() {
         Loan loan = Loan.builder().build();
         Installment installmentOne = Installment.builder().isPaid(false).build();
