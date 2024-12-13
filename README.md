@@ -143,3 +143,5 @@ The installments will be paid according to their discounted or penalized amount.
 ## Design Considerations on the Codebase
 DDD was considered as the main approach for the development of codebase. There are entities with rich and encapsulated behavior, value objects representing the values that are spoken as domain terms, and separated layers 
 as domain, application, and infrastructure.
+
+All requirements + Bonus 2, which were shared in the Credit Module Challenge document, has been implemented for the application.
