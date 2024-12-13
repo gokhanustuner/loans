@@ -12,7 +12,8 @@ import java.util.List;
 public class PayLoanService {
     public PayLoanResult pay(Loan loan, BigDecimal amount) {
         List<Installment> unpaidInstallments = loan.unpaidInstallments();
-        BigDecimal availableAmount = BigDecimal.valueOf(amount.doubleValue());
+
+        BigDecimal availableAmount = amount;
         BigDecimal totalAmountPaid = BigDecimal.ZERO;
         int numberOfInstallmentsPaid = 0;
 
@@ -25,7 +26,9 @@ public class PayLoanService {
             }
         }
 
-        if (unpaidInstallments.isEmpty()) loan.complete();
+        if (unpaidInstallments.isEmpty()) {
+            loan.complete();
+        }
 
         return new PayLoanResult(numberOfInstallmentsPaid, totalAmountPaid, loan.getIsPaid());
     }
